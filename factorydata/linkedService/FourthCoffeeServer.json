@@ -1,0 +1,23 @@
+{
+	"name": "FourthCoffeeServer",
+	"properties": {
+		"annotations": [],
+		"type": "FileServer",
+		"typeProperties": {
+			"host": "C:\\Rentals",
+			"userId": "flwagner",
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "MyAzureKeyVault",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "FourthCoffee"
+			}
+		},
+		"connectVia": {
+			"referenceName": "FourthCoffee",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
