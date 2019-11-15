@@ -1,0 +1,19 @@
+{
+	"name": "DataLakeMovies",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "DataLakeSink",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "movies.json",
+				"folderPath": "movies",
+				"fileSystem": "datalake"
+			}
+		}
+	}
+}

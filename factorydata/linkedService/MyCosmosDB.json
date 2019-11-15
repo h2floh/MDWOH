@@ -1,0 +1,17 @@
+{
+	"name": "MyCosmosDB",
+	"properties": {
+		"annotations": [],
+		"type": "CosmosDb",
+		"typeProperties": {
+			"connectionString": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "MyAzureKeyVault",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "CosmosDB"
+			}
+		}
+	}
+}

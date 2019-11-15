@@ -1,5 +1,5 @@
 {
-	"name": "DestinationDataset_ije",
+	"name": "DataLakeCloudSales",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "DataLakeSink",
