@@ -1,5 +1,5 @@
 {
-	"name": "SourceDataset_0ut",
+	"name": "SourceRentals",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "FourthCoffeeServer",
