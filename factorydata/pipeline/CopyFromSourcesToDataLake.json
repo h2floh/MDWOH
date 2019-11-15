@@ -1,5 +1,5 @@
 {
-	"name": "CopyFromSQLtoDataLake",
+	"name": "CopyFromSourcesToDataLake",
 	"properties": {
 		"activities": [
 			{
