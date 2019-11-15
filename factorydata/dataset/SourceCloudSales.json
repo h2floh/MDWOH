@@ -1,5 +1,5 @@
 {
-	"name": "SourceDataset_ije",
+	"name": "SourceCloudSales",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "CloudSalesSQLSource",

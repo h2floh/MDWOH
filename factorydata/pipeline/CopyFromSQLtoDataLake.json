@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "ForEach_ije",
+				"name": "ForEach_Table_CloudSales",
 				"type": "ForEach",
 				"dependsOn": [],
 				"userProperties": [],
@@ -14,7 +14,7 @@
 					},
 					"activities": [
 						{
-							"name": "Copy_ije",
+							"name": "CopyCloudSales",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
@@ -53,7 +53,7 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "SourceDataset_ije",
+									"referenceName": "SourceCloudSales",
 									"type": "DatasetReference",
 									"parameters": {
 										"cw_table": "@item().source.table"
@@ -62,7 +62,7 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "DestinationDataset_ije",
+									"referenceName": "DataLakeCloudSales",
 									"type": "DatasetReference",
 									"parameters": {
 										"cw_fileName": "@item().destination.fileName"
@@ -72,6 +72,32 @@
 						}
 					]
 				}
+			},
+			{
+				"name": "CopyMovies",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "CosmosDbSqlApiSource",
+						"preferredRegions": []
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "SourceMovies",
+						"type": "DatasetReference"
+					}
+				]
 			}
 		],
 		"parameters": {
