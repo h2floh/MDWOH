@@ -14,11 +14,26 @@
 		"DataLakeSink_properties_typeProperties_url": {
 			"value": "https://datalake@ohmdwflwagner.dfs.core.windows.net/"
 		},
+		"FourthCoffeeServer_properties_typeProperties_host": {
+			"value": "C:\\Rentals"
+		},
+		"FourthCoffeeServer_properties_typeProperties_userId": {
+			"value": "flwagner"
+		},
 		"MyAzureKeyVault_properties_typeProperties_baseUrl": {
 			"value": "https://dfkvfl.vault.azure.net/"
 		},
 		"MyCosmosDB_properties_typeProperties_connectionString_secretName": {
 			"value": "CosmosDB"
+		},
+		"VanArsdelSQLServer_properties_typeProperties_connectionString_secretName": {
+			"value": "VanArsdelSQLServer"
+		},
+		"FourthCoffee_properties_typeProperties_linkedInfo_resourceId": {
+			"value": "/subscriptions/3b559740-5a58-4416-9d55-89cef0e9b9d1/resourcegroups/cloud-shell-storage-northeurope/providers/Microsoft.DataFactory/factories/StouthFactories/integrationruntimes/integrationRuntime4coffee"
+		},
+		"VanArsdel_properties_typeProperties_linkedInfo_resourceId": {
+			"value": "/subscriptions/3b559740-5a58-4416-9d55-89cef0e9b9d1/resourcegroups/cloud-shell-storage-northeurope/providers/Microsoft.DataFactory/factories/StouthFactories/integrationruntimes/integrationRuntime2"
 		}
 	}
 }

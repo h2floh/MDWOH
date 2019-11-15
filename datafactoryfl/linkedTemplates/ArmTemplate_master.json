@@ -19,6 +19,14 @@
 			"type": "string",
 			"defaultValue": "https://datalake@ohmdwflwagner.dfs.core.windows.net/"
 		},
+		"FourthCoffeeServer_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "C:\\Rentals"
+		},
+		"FourthCoffeeServer_properties_typeProperties_userId": {
+			"type": "string",
+			"defaultValue": "flwagner"
+		},
 		"MyAzureKeyVault_properties_typeProperties_baseUrl": {
 			"type": "string",
 			"defaultValue": "https://dfkvfl.vault.azure.net/"
@@ -26,6 +34,18 @@
 		"MyCosmosDB_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
 			"defaultValue": "CosmosDB"
+		},
+		"VanArsdelSQLServer_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "VanArsdelSQLServer"
+		},
+		"FourthCoffee_properties_typeProperties_linkedInfo_resourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/3b559740-5a58-4416-9d55-89cef0e9b9d1/resourcegroups/cloud-shell-storage-northeurope/providers/Microsoft.DataFactory/factories/StouthFactories/integrationruntimes/integrationRuntime4coffee"
+		},
+		"VanArsdel_properties_typeProperties_linkedInfo_resourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/3b559740-5a58-4416-9d55-89cef0e9b9d1/resourcegroups/cloud-shell-storage-northeurope/providers/Microsoft.DataFactory/factories/StouthFactories/integrationruntimes/integrationRuntime2"
 		},
 		"containerUri": {
 			"type": "string",
@@ -60,14 +80,29 @@
 					"MyAzureKeyVault_properties_typeProperties_baseUrl": {
 						"value": "[parameters('MyAzureKeyVault_properties_typeProperties_baseUrl')]"
 					},
+					"FourthCoffee_properties_typeProperties_linkedInfo_resourceId": {
+						"value": "[parameters('FourthCoffee_properties_typeProperties_linkedInfo_resourceId')]"
+					},
+					"VanArsdel_properties_typeProperties_linkedInfo_resourceId": {
+						"value": "[parameters('VanArsdel_properties_typeProperties_linkedInfo_resourceId')]"
+					},
 					"CloudSalesSQLSource_properties_typeProperties_connectionString_secretName": {
 						"value": "[parameters('CloudSalesSQLSource_properties_typeProperties_connectionString_secretName')]"
 					},
 					"CloudStreamingSQLSource_properties_typeProperties_connectionString_secretName": {
 						"value": "[parameters('CloudStreamingSQLSource_properties_typeProperties_connectionString_secretName')]"
 					},
+					"FourthCoffeeServer_properties_typeProperties_host": {
+						"value": "[parameters('FourthCoffeeServer_properties_typeProperties_host')]"
+					},
+					"FourthCoffeeServer_properties_typeProperties_userId": {
+						"value": "[parameters('FourthCoffeeServer_properties_typeProperties_userId')]"
+					},
 					"MyCosmosDB_properties_typeProperties_connectionString_secretName": {
 						"value": "[parameters('MyCosmosDB_properties_typeProperties_connectionString_secretName')]"
+					},
+					"VanArsdelSQLServer_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('VanArsdelSQLServer_properties_typeProperties_connectionString_secretName')]"
 					}
 				}
 			},

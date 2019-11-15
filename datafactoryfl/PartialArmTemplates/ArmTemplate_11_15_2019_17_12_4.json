@@ -6,46 +6,6 @@
 			"type": "string",
 			"metadata": "Data Factory name",
 			"defaultValue": "datafactoryfl"
-		},
-		"CloudSalesSQLSource_properties_typeProperties_connectionString_secretName": {
-			"type": "string",
-			"defaultValue": "ConnectionStringCloudSales"
-		},
-		"CloudStreamingSQLSource_properties_typeProperties_connectionString_secretName": {
-			"type": "string",
-			"defaultValue": "ConnectionStringCloudStreaming"
-		},
-		"DataLakeSink_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://datalake@ohmdwflwagner.dfs.core.windows.net/"
-		},
-		"FourthCoffeeServer_properties_typeProperties_host": {
-			"type": "string",
-			"defaultValue": "C:\\Rentals"
-		},
-		"FourthCoffeeServer_properties_typeProperties_userId": {
-			"type": "string",
-			"defaultValue": "flwagner"
-		},
-		"MyAzureKeyVault_properties_typeProperties_baseUrl": {
-			"type": "string",
-			"defaultValue": "https://dfkvfl.vault.azure.net/"
-		},
-		"MyCosmosDB_properties_typeProperties_connectionString_secretName": {
-			"type": "string",
-			"defaultValue": "CosmosDB"
-		},
-		"VanArsdelSQLServer_properties_typeProperties_connectionString_secretName": {
-			"type": "string",
-			"defaultValue": "VanArsdelSQLServer"
-		},
-		"FourthCoffee_properties_typeProperties_linkedInfo_resourceId": {
-			"type": "string",
-			"defaultValue": "/subscriptions/3b559740-5a58-4416-9d55-89cef0e9b9d1/resourcegroups/cloud-shell-storage-northeurope/providers/Microsoft.DataFactory/factories/StouthFactories/integrationruntimes/integrationRuntime4coffee"
-		},
-		"VanArsdel_properties_typeProperties_linkedInfo_resourceId": {
-			"type": "string",
-			"defaultValue": "/subscriptions/3b559740-5a58-4416-9d55-89cef0e9b9d1/resourcegroups/cloud-shell-storage-northeurope/providers/Microsoft.DataFactory/factories/StouthFactories/integrationruntimes/integrationRuntime2"
 		}
 	},
 	"variables": {
@@ -161,15 +121,13 @@
 						"inputs": [
 							{
 								"referenceName": "SourceMovies",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						],
 						"outputs": [
 							{
 								"referenceName": "DataLakeMovies",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						]
 					},
@@ -294,15 +252,13 @@
 						"inputs": [
 							{
 								"referenceName": "SourceRentals",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						],
 						"outputs": [
 							{
 								"referenceName": "DataLakeRentals",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						]
 					},
@@ -502,116 +458,10 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/SourceMovies')]",
-				"[concat(variables('factoryId'), '/datasets/DataLakeMovies')]",
 				"[concat(variables('factoryId'), '/datasets/SourceRentals')]",
 				"[concat(variables('factoryId'), '/datasets/DataLakeRentals')]",
-				"[concat(variables('factoryId'), '/datasets/SourceCloudSales')]",
-				"[concat(variables('factoryId'), '/datasets/DataLakeCloudSales')]",
-				"[concat(variables('factoryId'), '/datasets/SourceCloudStreaming')]",
-				"[concat(variables('factoryId'), '/datasets/DataLakeCloudStreaming')]",
 				"[concat(variables('factoryId'), '/datasets/SourceRentalsVA')]",
 				"[concat(variables('factoryId'), '/datasets/DataLakeRentalsVA')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DataLakeCloudSales')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "DataLakeSink",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"cw_fileName": {
-						"type": "String"
-					}
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": {
-							"value": "@dataset().cw_fileName",
-							"type": "Expression"
-						},
-						"folderPath": "CloudSales",
-						"fileSystem": "datalake"
-					},
-					"columnDelimiter": "|",
-					"rowDelimiter": "\n",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/DataLakeSink')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DataLakeCloudStreaming')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "DataLakeSink",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"cw_fileName": {
-						"type": "String"
-					}
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": {
-							"value": "@dataset().cw_fileName",
-							"type": "Expression"
-						},
-						"folderPath": "CloudStreaming",
-						"fileSystem": "datalake"
-					},
-					"columnDelimiter": "|",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/DataLakeSink')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DataLakeMovies')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "DataLakeSink",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Json",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": "movies.json",
-						"folderPath": "movies",
-						"fileSystem": "datalake"
-					}
-				},
-				"schema": {}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/DataLakeSink')]"
 			]
 		},
 		{
@@ -638,9 +488,7 @@
 				},
 				"schema": []
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/DataLakeSink')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/DataLakeRentalsVA')]",
@@ -675,126 +523,7 @@
 				},
 				"schema": []
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/DataLakeSink')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SourceCloudSales')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "CloudSalesSQLSource",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"cw_table": {
-						"type": "String"
-					}
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": {
-						"value": "@dataset().cw_table",
-						"type": "Expression"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/CloudSalesSQLSource')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SourceCloudStreaming')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "CloudStreamingSQLSource",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"cw_table": {
-						"type": "String"
-					}
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": {
-						"value": "@dataset().cw_table",
-						"type": "Expression"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/CloudStreamingSQLSource')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SourceMovies')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "MyCosmosDB",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "CosmosDbSqlApiCollection",
-				"schema": {
-					"type": "object",
-					"properties": {
-						"actors": {
-							"type": "array",
-							"items": {
-								"type": "object",
-								"properties": {
-									"name": {
-										"type": "string"
-									}
-								}
-							}
-						},
-						"availabilityDate": {
-							"type": "string"
-						},
-						"genre": {
-							"type": "string"
-						},
-						"rating": {
-							"type": "string"
-						},
-						"releaseYear": {
-							"type": "integer"
-						},
-						"runtime": {
-							"type": "integer"
-						},
-						"streamingAvailabilityDate": {
-							"type": "string"
-						},
-						"tier": {
-							"type": "integer"
-						},
-						"title": {
-							"type": "string"
-						}
-					}
-				},
-				"typeProperties": {
-					"collectionName": "movies"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/MyCosmosDB')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/SourceRentals')]",
@@ -865,63 +594,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/CloudSalesSQLSource')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"connectionString": {
-						"type": "AzureKeyVaultSecret",
-						"store": {
-							"referenceName": "MyAzureKeyVault",
-							"type": "LinkedServiceReference"
-						},
-						"secretName": "[parameters('CloudSalesSQLSource_properties_typeProperties_connectionString_secretName')]"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/MyAzureKeyVault')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/CloudStreamingSQLSource')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"connectionString": {
-						"type": "AzureKeyVaultSecret",
-						"store": {
-							"referenceName": "MyAzureKeyVault",
-							"type": "LinkedServiceReference"
-						},
-						"secretName": "[parameters('CloudStreamingSQLSource_properties_typeProperties_connectionString_secretName')]"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/MyAzureKeyVault')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DataLakeSink')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobFS",
-				"typeProperties": {
-					"url": "[parameters('DataLakeSink_properties_typeProperties_url')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/FourthCoffeeServer')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -929,8 +601,8 @@
 				"annotations": [],
 				"type": "FileServer",
 				"typeProperties": {
-					"host": "[parameters('FourthCoffeeServer_properties_typeProperties_host')]",
-					"userId": "[parameters('FourthCoffeeServer_properties_typeProperties_userId')]",
+					"host": "C:\\Rentals",
+					"userId": "flwagner",
 					"password": {
 						"type": "AzureKeyVaultSecret",
 						"store": {
@@ -945,45 +617,7 @@
 					"type": "IntegrationRuntimeReference"
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/FourthCoffee')]",
-				"[concat(variables('factoryId'), '/linkedServices/MyAzureKeyVault')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/MyAzureKeyVault')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureKeyVault",
-				"typeProperties": {
-					"baseUrl": "[parameters('MyAzureKeyVault_properties_typeProperties_baseUrl')]"
-				}
-			},
 			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/MyCosmosDB')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "CosmosDb",
-				"typeProperties": {
-					"connectionString": {
-						"type": "AzureKeyVaultSecret",
-						"store": {
-							"referenceName": "MyAzureKeyVault",
-							"type": "LinkedServiceReference"
-						},
-						"secretName": "[parameters('MyCosmosDB_properties_typeProperties_connectionString_secretName')]"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/MyAzureKeyVault')]"
-			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/VanArsdelSQLServer')]",
@@ -999,45 +633,12 @@
 							"referenceName": "MyAzureKeyVault",
 							"type": "LinkedServiceReference"
 						},
-						"secretName": "[parameters('VanArsdelSQLServer_properties_typeProperties_connectionString_secretName')]"
+						"secretName": "VanArsdelSQLServer"
 					}
 				},
 				"connectVia": {
 					"referenceName": "VanArsdel",
 					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/VanArsdel')]",
-				"[concat(variables('factoryId'), '/linkedServices/MyAzureKeyVault')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/FourthCoffee')]",
-			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "SelfHosted",
-				"typeProperties": {
-					"linkedInfo": {
-						"resourceId": "[parameters('FourthCoffee_properties_typeProperties_linkedInfo_resourceId')]",
-						"authorizationType": "Rbac"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/VanArsdel')]",
-			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "SelfHosted",
-				"typeProperties": {
-					"linkedInfo": {
-						"resourceId": "[parameters('VanArsdel_properties_typeProperties_linkedInfo_resourceId')]",
-						"authorizationType": "Rbac"
-					}
 				}
 			},
 			"dependsOn": []

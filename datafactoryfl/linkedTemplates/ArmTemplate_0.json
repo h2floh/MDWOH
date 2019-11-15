@@ -15,6 +15,14 @@
 			"type": "string",
 			"defaultValue": "https://dfkvfl.vault.azure.net/"
 		},
+		"FourthCoffee_properties_typeProperties_linkedInfo_resourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/3b559740-5a58-4416-9d55-89cef0e9b9d1/resourcegroups/cloud-shell-storage-northeurope/providers/Microsoft.DataFactory/factories/StouthFactories/integrationruntimes/integrationRuntime4coffee"
+		},
+		"VanArsdel_properties_typeProperties_linkedInfo_resourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/3b559740-5a58-4416-9d55-89cef0e9b9d1/resourcegroups/cloud-shell-storage-northeurope/providers/Microsoft.DataFactory/factories/StouthFactories/integrationruntimes/integrationRuntime2"
+		},
 		"CloudSalesSQLSource_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
 			"defaultValue": "ConnectionStringCloudSales"
@@ -23,9 +31,21 @@
 			"type": "string",
 			"defaultValue": "ConnectionStringCloudStreaming"
 		},
+		"FourthCoffeeServer_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "C:\\Rentals"
+		},
+		"FourthCoffeeServer_properties_typeProperties_userId": {
+			"type": "string",
+			"defaultValue": "flwagner"
+		},
 		"MyCosmosDB_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
 			"defaultValue": "CosmosDB"
+		},
+		"VanArsdelSQLServer_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "VanArsdelSQLServer"
 		}
 	},
 	"variables": {
@@ -54,6 +74,36 @@
 				"type": "AzureKeyVault",
 				"typeProperties": {
 					"baseUrl": "[parameters('MyAzureKeyVault_properties_typeProperties_baseUrl')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/FourthCoffee')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"typeProperties": {
+					"linkedInfo": {
+						"resourceId": "[parameters('FourthCoffee_properties_typeProperties_linkedInfo_resourceId')]",
+						"authorizationType": "Rbac"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/VanArsdel')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"typeProperties": {
+					"linkedInfo": {
+						"resourceId": "[parameters('VanArsdel_properties_typeProperties_linkedInfo_resourceId')]",
+						"authorizationType": "Rbac"
+					}
 				}
 			},
 			"dependsOn": []
@@ -159,6 +209,71 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/DataLakeRentals')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "DataLakeSink",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "Rentals",
+						"fileSystem": "datalake"
+					},
+					"columnDelimiter": "|",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/DataLakeSink')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DataLakeRentalsVA')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "DataLakeSink",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"cw_fileName": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().cw_fileName",
+							"type": "Expression"
+						},
+						"folderPath": "VanArsdel",
+						"fileSystem": "datalake"
+					},
+					"columnDelimiter": "|",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/DataLakeSink')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/CloudSalesSQLSource')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -203,6 +318,35 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/FourthCoffeeServer')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "FileServer",
+				"typeProperties": {
+					"host": "[parameters('FourthCoffeeServer_properties_typeProperties_host')]",
+					"userId": "[parameters('FourthCoffeeServer_properties_typeProperties_userId')]",
+					"password": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "MyAzureKeyVault",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "FourthCoffee"
+					}
+				},
+				"connectVia": {
+					"referenceName": "FourthCoffee",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/FourthCoffee')]",
+				"[concat(variables('factoryId'), '/linkedServices/MyAzureKeyVault')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/MyCosmosDB')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -221,6 +365,33 @@
 				}
 			},
 			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/MyAzureKeyVault')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/VanArsdelSQLServer')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"connectionString": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "MyAzureKeyVault",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "[parameters('VanArsdelSQLServer_properties_typeProperties_connectionString_secretName')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "VanArsdel",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/VanArsdel')]",
 				"[concat(variables('factoryId'), '/linkedServices/MyAzureKeyVault')]"
 			]
 		},
@@ -339,6 +510,74 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/MyCosmosDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SourceRentals')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "FourthCoffeeServer",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "FileServerLocation"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "ActorID",
+						"type": "String"
+					},
+					{
+						"name": "ActorName",
+						"type": "String"
+					},
+					{
+						"name": "Gender",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/FourthCoffeeServer')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SourceRentalsVA')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "VanArsdelSQLServer",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"cw_table": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": {
+						"value": "@dataset().cw_table",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/VanArsdelSQLServer')]"
 			]
 		},
 		{
@@ -532,6 +771,139 @@
 								}
 							]
 						}
+					},
+					{
+						"name": "Copy_Rentals",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [
+							{
+								"name": "Source",
+								"value": "/"
+							},
+							{
+								"name": "Destination",
+								"value": "datalake/Rentals/"
+							}
+						],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "FileServerReadSettings",
+									"recursive": true,
+									"wildcardFileName": "*"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings",
+									"skipLineCount": 0
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "SourceRentals",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DataLakeRentals",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "ForEach_Table_Rentals",
+						"type": "ForEach",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@pipeline().parameters.rental_items",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Copy_SQLRentals",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [
+										{
+											"name": "Source",
+											"value": "dbo.@{item().source.table}"
+										},
+										{
+											"name": "Destination",
+											"value": "datalake/VanArsdel/@{item().destination.fileName}"
+										}
+									],
+									"typeProperties": {
+										"source": {
+											"type": "SqlServerSource"
+										},
+										"sink": {
+											"type": "DelimitedTextSink",
+											"storeSettings": {
+												"type": "AzureBlobFSWriteSettings"
+											},
+											"formatSettings": {
+												"type": "DelimitedTextWriteSettings",
+												"quoteAllText": true,
+												"fileExtension": ".txt"
+											}
+										},
+										"enableStaging": false
+									},
+									"inputs": [
+										{
+											"referenceName": "SourceRentalsVA",
+											"type": "DatasetReference",
+											"parameters": {
+												"cw_table": "@item().source.table"
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "DataLakeRentalsVA",
+											"type": "DatasetReference",
+											"parameters": {
+												"cw_fileName": "@item().destination.fileName"
+											}
+										}
+									]
+								}
+							]
+						}
 					}
 				],
 				"parameters": {
@@ -600,6 +972,59 @@
 								}
 							}
 						]
+					},
+					"rental_items": {
+						"type": "array",
+						"defaultValue": [
+							{
+								"source": {
+									"table": "Actors"
+								},
+								"destination": {
+									"fileName": "dboActors.txt"
+								}
+							},
+							{
+								"source": {
+									"table": "Customers"
+								},
+								"destination": {
+									"fileName": "dboCustomers.txt"
+								}
+							},
+							{
+								"source": {
+									"table": "MovieActors"
+								},
+								"destination": {
+									"fileName": "dboMovieActors.txt"
+								}
+							},
+							{
+								"source": {
+									"table": "Movies"
+								},
+								"destination": {
+									"fileName": "dboMovies.txt"
+								}
+							},
+							{
+								"source": {
+									"table": "OnlineMovieMappings"
+								},
+								"destination": {
+									"fileName": "dboOnlineMovieMappings.txt"
+								}
+							},
+							{
+								"source": {
+									"table": "Transactions"
+								},
+								"destination": {
+									"fileName": "dboTransactions.txt"
+								}
+							}
+						]
 					}
 				},
 				"annotations": []
@@ -607,10 +1032,14 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/SourceMovies')]",
 				"[concat(variables('factoryId'), '/datasets/DataLakeMovies')]",
+				"[concat(variables('factoryId'), '/datasets/SourceRentals')]",
+				"[concat(variables('factoryId'), '/datasets/DataLakeRentals')]",
 				"[concat(variables('factoryId'), '/datasets/SourceCloudSales')]",
 				"[concat(variables('factoryId'), '/datasets/DataLakeCloudSales')]",
 				"[concat(variables('factoryId'), '/datasets/SourceCloudStreaming')]",
-				"[concat(variables('factoryId'), '/datasets/DataLakeCloudStreaming')]"
+				"[concat(variables('factoryId'), '/datasets/DataLakeCloudStreaming')]",
+				"[concat(variables('factoryId'), '/datasets/SourceRentalsVA')]",
+				"[concat(variables('factoryId'), '/datasets/DataLakeRentalsVA')]"
 			]
 		}
 	]
