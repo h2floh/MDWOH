@@ -1,11 +1,19 @@
 {
 	"name": "DataLakeSink",
-	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
 		"annotations": [],
 		"type": "AzureBlobFS",
 		"typeProperties": {
-			"url": "https://datalake@ohmdwflwagner.dfs.core.windows.net/"
+			"url": "https://datalake@mdwohdata.dfs.core.windows.net/",
+			"accountKey": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "MyAzureKeyVault",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "DataLakeAccessKey"
+			}
 		}
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/linkedservices"
 }
