@@ -1,0 +1,11 @@
+{
+	"name": "DataLakeSink",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "https://ohmdwflwagner.dfs.core.windows.net"
+		}
+	}
+}
