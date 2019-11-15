@@ -1,5 +1,5 @@
 {
-	"name": "DestinationDataset_3s5",
+	"name": "DataLakeCloudStreaming",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "DataLakeSink",
