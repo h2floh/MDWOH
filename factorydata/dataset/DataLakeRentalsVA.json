@@ -1,5 +1,5 @@
 {
-	"name": "DestinationDataset_vhu",
+	"name": "DataLakeRentalsVA",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "DataLakeSink",
