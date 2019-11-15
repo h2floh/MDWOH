@@ -9,7 +9,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@pipeline().parameters.cw_items",
+						"value": "@pipeline().parameters.sales_items",
 						"type": "Expression"
 					},
 					"activities": [
@@ -122,7 +122,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@pipeline().parameters.cw_items",
+						"value": "@pipeline().parameters.stream_items",
 						"type": "Expression"
 					},
 					"activities": [
@@ -188,7 +188,7 @@
 			}
 		],
 		"parameters": {
-			"cw_items": {
+			"sales_items": {
 				"type": "Array",
 				"defaultValue": [
 					{
@@ -221,6 +221,35 @@
 						},
 						"destination": {
 							"fileName": "dboOrders.txt"
+						}
+					}
+				]
+			},
+			"stream_items": {
+				"type": "array",
+				"defaultValue": [
+					{
+						"source": {
+							"table": "Addresses"
+						},
+						"destination": {
+							"fileName": "dboAddresses.txt"
+						}
+					},
+					{
+						"source": {
+							"table": "Customers"
+						},
+						"destination": {
+							"fileName": "dboCustomers.txt"
+						}
+					},
+					{
+						"source": {
+							"table": "Transactions"
+						},
+						"destination": {
+							"fileName": "dboTransactions.txt"
 						}
 					}
 				]
