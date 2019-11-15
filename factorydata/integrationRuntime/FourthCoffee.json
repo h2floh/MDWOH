@@ -1,0 +1,12 @@
+{
+	"name": "FourthCoffee",
+	"properties": {
+		"type": "SelfHosted",
+		"typeProperties": {
+			"linkedInfo": {
+				"resourceId": "/subscriptions/3b559740-5a58-4416-9d55-89cef0e9b9d1/resourcegroups/cloud-shell-storage-northeurope/providers/Microsoft.DataFactory/factories/StouthFactories/integrationruntimes/integrationRuntime4coffee",
+				"authorizationType": "Rbac"
+			}
+		}
+	}
+}
