@@ -11,6 +11,10 @@
 			"type": "string",
 			"defaultValue": "ConnectionStringCloudSales"
 		},
+		"CloudStreamingSQLSource_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "ConnectionStringCloudStreaming"
+		},
 		"DataLakeSink_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://datalake@ohmdwflwagner.dfs.core.windows.net/"
@@ -18,6 +22,10 @@
 		"MyAzureKeyVault_properties_typeProperties_baseUrl": {
 			"type": "string",
 			"defaultValue": "https://dfkvfl.vault.azure.net/"
+		},
+		"MyCosmosDB_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "CosmosDB"
 		},
 		"containerUri": {
 			"type": "string",
@@ -54,6 +62,12 @@
 					},
 					"CloudSalesSQLSource_properties_typeProperties_connectionString_secretName": {
 						"value": "[parameters('CloudSalesSQLSource_properties_typeProperties_connectionString_secretName')]"
+					},
+					"CloudStreamingSQLSource_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('CloudStreamingSQLSource_properties_typeProperties_connectionString_secretName')]"
+					},
+					"MyCosmosDB_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('MyCosmosDB_properties_typeProperties_connectionString_secretName')]"
 					}
 				}
 			},

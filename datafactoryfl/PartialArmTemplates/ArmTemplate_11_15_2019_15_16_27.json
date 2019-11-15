@@ -6,26 +6,6 @@
 			"type": "string",
 			"metadata": "Data Factory name",
 			"defaultValue": "datafactoryfl"
-		},
-		"CloudSalesSQLSource_properties_typeProperties_connectionString_secretName": {
-			"type": "string",
-			"defaultValue": "ConnectionStringCloudSales"
-		},
-		"CloudStreamingSQLSource_properties_typeProperties_connectionString_secretName": {
-			"type": "string",
-			"defaultValue": "ConnectionStringCloudStreaming"
-		},
-		"DataLakeSink_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://datalake@ohmdwflwagner.dfs.core.windows.net/"
-		},
-		"MyAzureKeyVault_properties_typeProperties_baseUrl": {
-			"type": "string",
-			"defaultValue": "https://dfkvfl.vault.azure.net/"
-		},
-		"MyCosmosDB_properties_typeProperties_connectionString_secretName": {
-			"type": "string",
-			"defaultValue": "CosmosDB"
 		}
 	},
 	"variables": {
@@ -141,15 +121,13 @@
 						"inputs": [
 							{
 								"referenceName": "SourceMovies",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						],
 						"outputs": [
 							{
 								"referenceName": "DataLakeMovies",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						]
 					},
@@ -338,9 +316,7 @@
 				},
 				"schema": []
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/DataLakeSink')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/DataLakeCloudStreaming')]",
@@ -375,9 +351,7 @@
 				},
 				"schema": []
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/DataLakeSink')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/DataLakeMovies')]",
@@ -397,12 +371,9 @@
 						"folderPath": "movies",
 						"fileSystem": "datalake"
 					}
-				},
-				"schema": {}
+				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/DataLakeSink')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/SourceCloudSales')]",
@@ -429,9 +400,7 @@
 					}
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/CloudSalesSQLSource')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/SourceCloudStreaming')]",
@@ -522,28 +491,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/CloudSalesSQLSource')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"connectionString": {
-						"type": "AzureKeyVaultSecret",
-						"store": {
-							"referenceName": "MyAzureKeyVault",
-							"type": "LinkedServiceReference"
-						},
-						"secretName": "[parameters('CloudSalesSQLSource_properties_typeProperties_connectionString_secretName')]"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/MyAzureKeyVault')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/CloudStreamingSQLSource')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -557,36 +504,8 @@
 							"referenceName": "MyAzureKeyVault",
 							"type": "LinkedServiceReference"
 						},
-						"secretName": "[parameters('CloudStreamingSQLSource_properties_typeProperties_connectionString_secretName')]"
+						"secretName": "ConnectionStringCloudStreaming"
 					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/MyAzureKeyVault')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DataLakeSink')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobFS",
-				"typeProperties": {
-					"url": "[parameters('DataLakeSink_properties_typeProperties_url')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/MyAzureKeyVault')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureKeyVault",
-				"typeProperties": {
-					"baseUrl": "[parameters('MyAzureKeyVault_properties_typeProperties_baseUrl')]"
 				}
 			},
 			"dependsOn": []
@@ -605,13 +524,11 @@
 							"referenceName": "MyAzureKeyVault",
 							"type": "LinkedServiceReference"
 						},
-						"secretName": "[parameters('MyCosmosDB_properties_typeProperties_connectionString_secretName')]"
+						"secretName": "CosmosDB"
 					}
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/MyAzureKeyVault')]"
-			]
+			"dependsOn": []
 		}
 	]
 }

@@ -8,11 +8,17 @@
 		"CloudSalesSQLSource_properties_typeProperties_connectionString_secretName": {
 			"value": "ConnectionStringCloudSales"
 		},
+		"CloudStreamingSQLSource_properties_typeProperties_connectionString_secretName": {
+			"value": "ConnectionStringCloudStreaming"
+		},
 		"DataLakeSink_properties_typeProperties_url": {
 			"value": "https://datalake@ohmdwflwagner.dfs.core.windows.net/"
 		},
 		"MyAzureKeyVault_properties_typeProperties_baseUrl": {
 			"value": "https://dfkvfl.vault.azure.net/"
+		},
+		"MyCosmosDB_properties_typeProperties_connectionString_secretName": {
+			"value": "CosmosDB"
 		},
 		"containerUri": {
 			"value": ""
