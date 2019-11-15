@@ -17,7 +17,7 @@
 		},
 		"DataLakeSink_properties_typeProperties_url": {
 			"type": "string",
-			"defaultValue": "https://datalake@ohmdwflwagner.dfs.core.windows.net/"
+			"defaultValue": "https://datalake@mdwohdata.dfs.core.windows.net/"
 		},
 		"FourthCoffeeServer_properties_typeProperties_host": {
 			"type": "string",
@@ -74,9 +74,6 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
-					"DataLakeSink_properties_typeProperties_url": {
-						"value": "[parameters('DataLakeSink_properties_typeProperties_url')]"
-					},
 					"MyAzureKeyVault_properties_typeProperties_baseUrl": {
 						"value": "[parameters('MyAzureKeyVault_properties_typeProperties_baseUrl')]"
 					},
@@ -91,6 +88,9 @@
 					},
 					"CloudStreamingSQLSource_properties_typeProperties_connectionString_secretName": {
 						"value": "[parameters('CloudStreamingSQLSource_properties_typeProperties_connectionString_secretName')]"
+					},
+					"DataLakeSink_properties_typeProperties_url": {
+						"value": "[parameters('DataLakeSink_properties_typeProperties_url')]"
 					},
 					"FourthCoffeeServer_properties_typeProperties_host": {
 						"value": "[parameters('FourthCoffeeServer_properties_typeProperties_host')]"

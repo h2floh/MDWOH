@@ -17,7 +17,7 @@
 		},
 		"DataLakeSink_properties_typeProperties_url": {
 			"type": "string",
-			"defaultValue": "https://datalake@ohmdwflwagner.dfs.core.windows.net/"
+			"defaultValue": "https://datalake@mdwohdata.dfs.core.windows.net/"
 		},
 		"FourthCoffeeServer_properties_typeProperties_host": {
 			"type": "string",
@@ -916,10 +916,20 @@
 				"annotations": [],
 				"type": "AzureBlobFS",
 				"typeProperties": {
-					"url": "[parameters('DataLakeSink_properties_typeProperties_url')]"
+					"url": "[parameters('DataLakeSink_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "MyAzureKeyVault",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "DataLakeAccessKey"
+					}
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/MyAzureKeyVault')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/FourthCoffeeServer')]",

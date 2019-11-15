@@ -7,10 +7,6 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "datafactoryfl"
 		},
-		"DataLakeSink_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://datalake@ohmdwflwagner.dfs.core.windows.net/"
-		},
 		"MyAzureKeyVault_properties_typeProperties_baseUrl": {
 			"type": "string",
 			"defaultValue": "https://dfkvfl.vault.azure.net/"
@@ -30,6 +26,10 @@
 		"CloudStreamingSQLSource_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
 			"defaultValue": "ConnectionStringCloudStreaming"
+		},
+		"DataLakeSink_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://datalake@mdwohdata.dfs.core.windows.net/"
 		},
 		"FourthCoffeeServer_properties_typeProperties_host": {
 			"type": "string",
@@ -52,19 +52,6 @@
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
-		{
-			"name": "[concat(parameters('factoryName'), '/DataLakeSink')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobFS",
-				"typeProperties": {
-					"url": "[parameters('DataLakeSink_properties_typeProperties_url')]"
-				}
-			},
-			"dependsOn": []
-		},
 		{
 			"name": "[concat(parameters('factoryName'), '/MyAzureKeyVault')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
@@ -107,6 +94,151 @@
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/CloudSalesSQLSource')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "MyAzureKeyVault",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "[parameters('CloudSalesSQLSource_properties_typeProperties_connectionString_secretName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/MyAzureKeyVault')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/CloudStreamingSQLSource')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "MyAzureKeyVault",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "[parameters('CloudStreamingSQLSource_properties_typeProperties_connectionString_secretName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/MyAzureKeyVault')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DataLakeSink')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('DataLakeSink_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "MyAzureKeyVault",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "DataLakeAccessKey"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/MyAzureKeyVault')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/FourthCoffeeServer')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "FileServer",
+				"typeProperties": {
+					"host": "[parameters('FourthCoffeeServer_properties_typeProperties_host')]",
+					"userId": "[parameters('FourthCoffeeServer_properties_typeProperties_userId')]",
+					"password": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "MyAzureKeyVault",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "FourthCoffee"
+					}
+				},
+				"connectVia": {
+					"referenceName": "FourthCoffee",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/FourthCoffee')]",
+				"[concat(variables('factoryId'), '/linkedServices/MyAzureKeyVault')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/MyCosmosDB')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "CosmosDb",
+				"typeProperties": {
+					"connectionString": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "MyAzureKeyVault",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "[parameters('MyCosmosDB_properties_typeProperties_connectionString_secretName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/MyAzureKeyVault')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/VanArsdelSQLServer')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"connectionString": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "MyAzureKeyVault",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "[parameters('VanArsdelSQLServer_properties_typeProperties_connectionString_secretName')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "VanArsdel",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/VanArsdel')]",
+				"[concat(variables('factoryId'), '/linkedServices/MyAzureKeyVault')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/DataLakeCloudSales')]",
@@ -271,128 +403,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/DataLakeSink')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/CloudSalesSQLSource')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"connectionString": {
-						"type": "AzureKeyVaultSecret",
-						"store": {
-							"referenceName": "MyAzureKeyVault",
-							"type": "LinkedServiceReference"
-						},
-						"secretName": "[parameters('CloudSalesSQLSource_properties_typeProperties_connectionString_secretName')]"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/MyAzureKeyVault')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/CloudStreamingSQLSource')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"connectionString": {
-						"type": "AzureKeyVaultSecret",
-						"store": {
-							"referenceName": "MyAzureKeyVault",
-							"type": "LinkedServiceReference"
-						},
-						"secretName": "[parameters('CloudStreamingSQLSource_properties_typeProperties_connectionString_secretName')]"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/MyAzureKeyVault')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/FourthCoffeeServer')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "FileServer",
-				"typeProperties": {
-					"host": "[parameters('FourthCoffeeServer_properties_typeProperties_host')]",
-					"userId": "[parameters('FourthCoffeeServer_properties_typeProperties_userId')]",
-					"password": {
-						"type": "AzureKeyVaultSecret",
-						"store": {
-							"referenceName": "MyAzureKeyVault",
-							"type": "LinkedServiceReference"
-						},
-						"secretName": "FourthCoffee"
-					}
-				},
-				"connectVia": {
-					"referenceName": "FourthCoffee",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/FourthCoffee')]",
-				"[concat(variables('factoryId'), '/linkedServices/MyAzureKeyVault')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/MyCosmosDB')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "CosmosDb",
-				"typeProperties": {
-					"connectionString": {
-						"type": "AzureKeyVaultSecret",
-						"store": {
-							"referenceName": "MyAzureKeyVault",
-							"type": "LinkedServiceReference"
-						},
-						"secretName": "[parameters('MyCosmosDB_properties_typeProperties_connectionString_secretName')]"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/MyAzureKeyVault')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/VanArsdelSQLServer')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "SqlServer",
-				"typeProperties": {
-					"connectionString": {
-						"type": "AzureKeyVaultSecret",
-						"store": {
-							"referenceName": "MyAzureKeyVault",
-							"type": "LinkedServiceReference"
-						},
-						"secretName": "[parameters('VanArsdelSQLServer_properties_typeProperties_connectionString_secretName')]"
-					}
-				},
-				"connectVia": {
-					"referenceName": "VanArsdel",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/VanArsdel')]",
-				"[concat(variables('factoryId'), '/linkedServices/MyAzureKeyVault')]"
 			]
 		},
 		{

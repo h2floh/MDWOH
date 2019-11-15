@@ -12,7 +12,7 @@
 			"value": "ConnectionStringCloudStreaming"
 		},
 		"DataLakeSink_properties_typeProperties_url": {
-			"value": "https://datalake@ohmdwflwagner.dfs.core.windows.net/"
+			"value": "https://datalake@mdwohdata.dfs.core.windows.net/"
 		},
 		"FourthCoffeeServer_properties_typeProperties_host": {
 			"value": "C:\\Rentals"
